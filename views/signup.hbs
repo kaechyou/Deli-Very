@@ -1,6 +1,7 @@
+<script defer src="/js/clientsignup.js"></script>
 <div class="container" style="width:500px">
   <h1>Регистрация</h1>
-  <form name="/user/signup" method="post">
+  <form name="registerForm" method="post">
     <div class="container">
       <div class="mb-2">
         <label for="exampleInputName1" class="form-label">Имя</label>
@@ -24,11 +25,11 @@
         <div class="mb-3 form-check">
           <label for="exampleCheck1" class="form-label">Выберите роль:</label>
           <div>
-            <input type="checkbox" class="form-check-input" value="1" name="role_id" id="exampleCheck1">
+            <input type="radio" class="form-check-input" value="1" name="role_id" id="exampleCheck1">
             <label class="form-check-label" value="1" id="signupRole1" for="exampleCheck1">Курьер</label>
           </div>
           <div>
-            <input type="checkbox" class="form-check-input" value="2" name="role_id" id="exampleCheck1">
+            <input type="radio" class="form-check-input" value="2" name="role_id" id="exampleCheck2" checked>
             <label class="form-check-label" value="2" id="signupRole2" for="exampleCheck2" checked>Клиент</label>
           </div>
         </div>

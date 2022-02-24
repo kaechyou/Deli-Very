@@ -20,7 +20,7 @@ router
       console.log(req.params);
       const userFromDB = await User.findOne({ where: { email: req.body.email } });
       if (userFromDB) {
-        return res.send('Этот email уже используется, попробуйте другой');
+        return res.json({ message: 'email занят' });
       } else {
         const { name, email, phone, role_id, pass } = req.body;
         if (name && email && phone && role_id && pass) {
@@ -28,9 +28,9 @@ router
           const password = sha256(pass);
           const user = await User.create({ name, email, phone, role_id, password });
           req.session.user = user;
-          return res.redirect('/');
+          return res.json({ message: 'Ok' });
         } else {
-          return res.send('Вы заполнили не все поля. Заполните все поля и попробуйте заново.');
+          return res.json({message:'не все поля'});
         }
       }
     } catch (error) {
@@ -52,8 +52,8 @@ router
   .post(async (req, res) => {
     try {
       // проверить, есть ли кто-то в рек сессии
-      if(req.session.user_id) {
-        res.send('Вы уже вошли в систему');
+      if (req.session.user_id) {
+        return res.json({ message: 'Вы уже вошли в систему'});
       } else {
         const { email, pass } = req.body;
         if (email && pass) {
@@ -65,15 +65,15 @@ router
               req.session.user_id = user.id;
               req.session.user_name = user.name;
               req.session.user_role = user.role_id;
-              return res.redirect('/');
+              return res.json({ message: 'Ok' });
             } else {
-              return res.send('Неверный пароль. Попробуйте заново.');
+              return res.json({ message: 'Неверный пароль' });
             }
           } else {
-            return res.send('Пользователя с таким email не существует. Зарегистрируйтесь или введите существующий email.');
+            return res.json({ message: 'Неверный email' });
           }
         } else {
-          return res.send('Вы заполнили не все поля. Заполните все поля и попробуйте заново.');
+          return res.json({ message: 'Не все поля' });
         }
       }
     } catch (error) {
