@@ -1,8 +1,11 @@
 const express = require('express');
+
 const multer = require('multer');
 const {
   User, Product, Order, Role,
 } = require('../db/models');
+
+const { courierRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 
@@ -26,7 +29,7 @@ router.get('/', async (req, res) => {
   res.render('orders', { products });
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', courierRouter, (req, res) => {
   res.render('newOrder');
 });
 
