@@ -1,11 +1,11 @@
 const express = require('express');
-<<<<<<< HEAD
-=======
+
 const multer = require('multer');
->>>>>>> 392fce609a2ee6b2422f30c0f75e3f8d395fb523
 const {
   User, Product, Order, Role,
 } = require('../db/models');
+
+const { courierRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
   res.render('orders', { products });
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', courierRouter, (req, res) => {
   res.render('newOrder');
 });
 

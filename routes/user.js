@@ -4,12 +4,6 @@ const { User, Product, Order } = require('../db/models');
 
 const router = express.Router();
 const multer = require('multer');
-const { Tag, Post, Post_tag } = require('../db/models');
-
-
-
-
-
 
 router.get('/courier', async (req, res) => {
   try {
@@ -91,7 +85,9 @@ router
         const user = await User.create({
           name, email, phone, role_id, password,
         });
-        req.session.user = user;
+        req.session.user_id = user.id;
+        req.session.user_name = user.name;
+        req.session.user_role = user.role_id;
         return res.json({ message: 'Ok' });
       }
       return res.json({ message: 'не все поля' });
