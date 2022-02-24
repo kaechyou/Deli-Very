@@ -1,5 +1,7 @@
 const express = require('express');
-const { User, Product, Order, Role } = require('../db/models');
+const {
+  User, Product, Order, Role,
+} = require('../db/models');
 
 const router = express.Router();
 
