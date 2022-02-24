@@ -1,8 +1,10 @@
 const express = require('express');
-<<<<<<< HEAD
-=======
+const {
+  User,
+  Product,
+  Order,
+  Role
 const multer = require('multer');
->>>>>>> 392fce609a2ee6b2422f30c0f75e3f8d395fb523
 const {
   User, Product, Order, Role,
 } = require('../db/models');
