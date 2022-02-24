@@ -15,6 +15,7 @@ const userRouter = require('./routes/user');
 const indexRouter = require('./routes/index');
 const ordersRouter = require('./routes/orders');
 
+const { addSessionCookies } = require('./middlewares/middleware');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,10 +32,12 @@ app.use(session({
   name: 'auth',
 }));
 
+// locals
+app.use(addSessionCookies);
+
 app.use('/user', userRouter);
 app.use('/', indexRouter);
 app.use('/orders', ordersRouter);
-
 
 app.listen(PORT, () => {
   console.log('Port is ok');
