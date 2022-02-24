@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
     where: {
       status: 'placed',
     },
+    order: [['createdAt', 'DESC']],
   });
   res.render('orders', { products });
 });
@@ -52,6 +53,5 @@ router.post('/new', upload.single('image'), async (req, res) => {
     res.sendStatus(418);
   }
 });
-
 
 module.exports = router;

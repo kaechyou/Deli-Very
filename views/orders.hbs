@@ -1,11 +1,21 @@
 <h1>Добро пожаловать в Kebab!</h1>
 
-{{#each products}}
-<div>
-Продукт: {{title}}
-</div>
-<div>
-Статус заказа: {{status}}
-</div>
-<hr>
-{{/each}}
+  <div class="buy-card">
+    {{#each products}}
+    <div data-id="{{id}}" class="card"  style="width: 18rem;">
+      <img src="{{img}}" class="card-img-top" alt="{{title}}">
+      <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Старая цена: {{price}}</li>
+        <li class="list-group-item">Новая цена: {{price}}</li>
+        <li class="list-group-item">Адрес: {{location}}</li>
+      </ul>
+      <div class="card-body">
+       <button type="button" name="buy" id="{{id}}"><a href="/orders/{{id}}">Купить</a></button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
