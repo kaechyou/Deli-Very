@@ -15,7 +15,6 @@ const userRouter = require('./routes/user');
 const indexRouter = require('./routes/index');
 const ordersRouter = require('./routes/orders');
 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +33,7 @@ app.use(session({
 app.use('/user', userRouter);
 app.use('/', indexRouter);
 app.use('/orders', ordersRouter);
+
 
 
 app.listen(PORT, () => {
