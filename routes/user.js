@@ -3,6 +3,13 @@ const sha256 = require('sha256');
 const { User, Product, Order } = require('../db/models');
 
 const router = express.Router();
+const multer = require('multer');
+const { Tag, Post, Post_tag } = require('../db/models');
+
+
+
+
+
 
 router.get('/courier', async (req, res) => {
   try {
