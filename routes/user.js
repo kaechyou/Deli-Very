@@ -5,12 +5,6 @@ const { User, Product, Order } = require('../db/models');
 const router = express.Router();
 const multer = require('multer');
 
-
-
-
-
-
-
 router.get('/courier', async (req, res) => {
   try {
     const products = await Product.findAll({ where: { courier_id: 1 } });
@@ -91,7 +85,11 @@ router
         const user = await User.create({
           name, email, phone, role_id, password,
         });
-        req.session.user = user;
+        req.session.name = name;
+        req.session.email = email;
+        req.session.id = user.id;
+        req.session.phone = phone;
+        req.session.role_id = role_id;
         return res.json({ message: 'Ok' });
       }
       return res.json({ message: 'не все поля' });

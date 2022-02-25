@@ -4,6 +4,7 @@ const addSessionCookies = function (req, res, next) {
   res.locals.id = req.session?.id;
   res.locals.phone = req.session?.phone;
   res.locals.role_id = req.session?.role_id;
+  console.log(res.locals.name);
   next();
 };
 
