@@ -3,6 +3,7 @@ const sha256 = require('sha256');
 const { User, Product, Order } = require('../db/models');
 
 const { courierRouter, clientRouter } = require('../middlewares/middleware');
+const mailClient = require('../sendEmailer');
 
 const router = express.Router();
 const multer = require('multer');
@@ -77,12 +78,15 @@ router.delete('/client', clientRouter, async (req, res) => {
       if (order.status === 'complete') {
         return res.sendStatus(234);
       }
+      const client = await User.findOne({ where: { id: order.client_id } });
+      const courierMail = client.email;
       await Order.destroy({ where: { id: req.body.id } });
+
       try {
-        mailClient(courierMail, 'Привет, я передумал покупать еду)');
-        } catch (e) {
-          console.log('Не удалось отправить сообщение');
-        }
+        await mailClient(courierMail, 'Привет, я передумал покупать еду)');
+      } catch (e) {
+        console.log('Не удалось отправить сообщение');
+      }
       res.sendStatus(200);
     } else {
       res.sendStatus(404);

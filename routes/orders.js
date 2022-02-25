@@ -84,22 +84,23 @@ router
         },
         include: User,
       });
-  // console.log(product.createdAt.toString());
-    // return res.render('product', { title, price, img, discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)) });
       if (product) {
-
-        // console.log(product);
         const discountedPrice = Math.floor(product.price * ((100 - product.discount) / 100));
-        // const timeCreatedAt = product.createdAt;
-        // const options = {
-        //   month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric',
-        // };
-        // const localTimeCreatedAt = timeCreatedAt.toLocaleDateString('ru', options);
-        // console.log(req.session.user_id, product?.User.id, req.session.id);
+
         if (req.session.user_id === product?.User.id) {
-          res.render('product', { product, discountedPrice, "isAuthor": true, date: product.createdAt.toString().slice(8, 24) });
+          res.render('product', {
+            product,
+            discountedPrice,
+            isAuthor: true,
+            date: product.createdAt.toString().slice(8, 24),
+          });
         } else {
-          res.render('product', { product, discountedPrice, "isAuthor": false, date: product.createdAt.toString().slice(0, 24)});
+          res.render('product', {
+            product,
+            discountedPrice,
+            isAuthor: false,
+            date: product.createdAt.toString().slice(0, 24),
+          });
         }
       } else {
         return res.render('error', {
@@ -115,36 +116,35 @@ router
     }
   })
   .delete(checkUser, async (req, res) => {
-    // try {
-    // console.log(req.params.id)
     try {
-    await Product.destroy({ where: { id: req.params.id } });
+      await Product.destroy({ where: { id: req.params.id } });
     } catch (e) {
-      
+
     }
-    // } catch (error) {
-    //   return res.json({ isDeleteSuccessful: false, errorMessage: 'Не удалось удалить запись из базы данных.' });
-    // }
-    // return res.json({ isDeleteSuccessful: true });
   })
-  .put(async (req,res)=>{
-    try{
-    const newOrder = await Order.create({product_id: req.params.id, client_id: req.session.user_id, location: req.body.location});
-    const product = await Product.findByPk(req.params.id);
-    const courierMail = product.client_id;
+  .put(async (req, res) => {
     try {
-    mailClient(courierMail, 'Привет, я хочу купить еду)');
+      const newOrder = await Order.create({
+        product_id: req.params.id,
+        client_id: req.session.user_id,
+        location: req.body.location,
+      });
+      const product = await Product.findByPk(req.params.id);
+      const courier = await User.findByPk(product.courier_id);
+      const courierMail = courier.email;
+      console.log('=====================>', courierMail);
+      try {
+        await mailClient(courierMail, 'Привет, я хочу купить еду)');
+      } catch (e) {
+        console.log('Не удалось отправить сообщение');
+      }
+      res.sendStatus(200);
     } catch (e) {
-      console.log('Не удалось отправить сообщение');
+      return res.render('error', {
+        message: 'Не удалось получить запись из базы данных.',
+        error: {},
+      });
     }
-    res.sendStatus(200);
-    }
- catch (e) {
-  return res.render('error', {
-    message: 'Не удалось получить запись из базы данных.',
-    error: {},
   });
- }  
-});
 
 module.exports = router;
