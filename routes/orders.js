@@ -1,5 +1,4 @@
 const express = require('express');
-
 const multer = require('multer');
 const {
   User, Product, Order, Role,
@@ -44,7 +43,7 @@ router.post('/new', upload.single('image'), async (req, res) => {
       price,
       discount,
       location,
-      courier_id: 1,
+      courier_id: req.session.user_id,
       status: 'placed',
       img: `/uploads/${req.file.originalname}`,
     });
@@ -53,5 +52,39 @@ router.post('/new', upload.single('image'), async (req, res) => {
     res.sendStatus(418);
   }
 });
+
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    let product;
+
+    try {
+      product = await Product.findOne({ where: { id: Number(req.params.id) }, include: User });
+      if (product) {
+        console.log(product);
+        const discountedPrice = (product.price - (product.price / product.discount)).toFixed(2);
+        // const timeCreatedAt = product.createdAt;
+        // const options = {
+        //   month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric',
+        // };
+        // const localTimeCreatedAt = timeCreatedAt.toLocaleDateString('ru', options);
+        if (req.session.user_id === product?.User.id) {
+          res.render('product', { product, discountedPrice, "isAuthor": true });
+        } else {
+          res.render('product', { product, discountedPrice, "isAuthor": false });
+        }
+      } else {
+        return res.render('error', {
+          message: 'Такой записи не существует.',
+          error: {},
+        });
+      }
+    } catch (error) {
+      return res.render('error', {
+        message: 'Не удалось получить запись из базы данных.',
+        error: {},
+      });
+    }
+  });
 
 module.exports = router;

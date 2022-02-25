@@ -1,0 +1,25 @@
+{{!-- <h1>Товар: {{product.title}}</h1>
+<div>Курьер: {{product.User.name}}</div>
+<div>Локация: {{product.location}}</div>
+<div><img src="{{product.img}}" alt="img" height="300px"></div>
+<span class="entry-date block font-3-4 c-lt-gray">Загружено {{product.createdAt}}</span>
+<p>{{product.body}}</p> --}}
+
+<div class="card" style="width:300px">
+  <img class="card-img-top" src="{{product.img}}" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">Товар: {{product.title}}</h4>
+    <p class="card-text">Локация: {{product.location}}</p>
+    <p class="card-text">Курьер: {{product.User.name}}</p>
+    <p class="card-text">Старая цена: {{product.price}}</p>
+    <p class="card-text">Новая цена: {{discountedPrice}}</p>
+    <p class="card-text">Загружено {{product.createdAt}}</p>
+    {{!-- <a href="#" class="btn btn-primary">See Profile</a> --}}
+    {{#if isAuthor}}
+        <button id="editProductButton" data-entryid="{{product.id}}" value="edit"
+          class="btn btn-primary">Редактировать</button>
+        <button id="deleteProductButton" data-entryid="{{product.id}}" value="delete"
+          class="btn btn-primary">Удалить</button>
+    {{/if}}
+  </div>
+</div>
