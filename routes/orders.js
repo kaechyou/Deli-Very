@@ -120,7 +120,7 @@ router
     try {
     await Product.destroy({ where: { id: req.params.id } });
     } catch (e) {
-      
+
     }
     // } catch (error) {
     //   return res.json({ isDeleteSuccessful: false, errorMessage: 'Не удалось удалить запись из базы данных.' });
@@ -131,9 +131,9 @@ router
     try{
     const newOrder = await Order.create({product_id: req.params.id, client_id: req.session.user_id, location: req.body.location});
     const product = await Product.findByPk(req.params.id);
-    const courierMail = product.client_id;
+    const client = await User.findOne({where:{id:product.courier_id}});
     try {
-    mailClient(courierMail, 'Привет, я хочу купить еду)');
+    mailClient(client.email, 'Привет, я хочу купить еду)');
     } catch (e) {
       console.log('Не удалось отправить сообщение');
     }
