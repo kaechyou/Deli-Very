@@ -87,7 +87,7 @@ router
         });
         req.session.name = name;
         req.session.email = email;
-        req.session.id = user.id;
+        req.session.user_id = user.id;
         req.session.phone = phone;
         req.session.role_id = role_id;
         return res.json({ message: 'Ok' });
@@ -124,7 +124,7 @@ router
           if (user.password === password) {
             req.session.name = user.name;
             req.session.email = email;
-            req.session.id = user.id;
+            req.session.user_id = user.id;
             req.session.phone = user.phone;
             req.session.role_id = user.role_id;
             return res.json({ message: 'Ok' });
