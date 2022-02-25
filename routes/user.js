@@ -2,10 +2,12 @@ const express = require('express');
 const sha256 = require('sha256');
 const { User, Product, Order } = require('../db/models');
 
+const { courierRouter } = require('../middlewares/middleware');
+
 const router = express.Router();
 const multer = require('multer');
 
-router.get('/courier', async (req, res) => {
+router.get('/courier', courierRouter, async (req, res) => {
   try {
     const products = await Product.findAll({ where: { courier_id: 1 } });
     const options = {
@@ -19,7 +21,7 @@ router.get('/courier', async (req, res) => {
   }
 });
 
-router.put('/courier', async (req, res) => {
+router.put('/courier', courierRouter, async (req, res) => {
   const product = await Product.findByPk(req.body.id);
   if (product.status === req.body.statusProduct) {
     res.sendStatus(234);
@@ -33,7 +35,7 @@ router.put('/courier', async (req, res) => {
   }
 });
 
-router.delete('/courier', async (req, res) => {
+router.delete('/courier', courierRouter, async (req, res) => {
   try {
     const order = await Order.findOne({ where: { product_id: req.body.id } });
     if (order) {
@@ -50,13 +52,24 @@ router.delete('/courier', async (req, res) => {
 
 router.get('/client', async (req, res) => {
   try {
-    const orders = await Order.findOne({ where: { client_id: req.session.user_id } });
-    res.render('client', { orders });
+    const orders = await Order.findAll({
+      where: {
+        client_id: req.session.user_id,
+      },
+      include: Product,
+    });
+    const options = {
+      hour: 'numeric', minute: 'numeric', month: 'long', day: 'numeric',
+    };
+    orders.map((el) => el.date = el.updatedAt.toLocaleDateString('ru', options));
+    res.render('clientProfile', { orders });
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
 });
+
+router.delete;
 
 // Регистрация: user/signup
 router
