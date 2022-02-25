@@ -3,6 +3,7 @@ const multer = require('multer');
 const {
   User, Product, Order, Role,
 } = require('../db/models');
+const { checkUser } = require('../middlewares/middleware');
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.get('/', async (req, res) => {
   res.render('orders', { products });
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', checkUser, (req, res) => {
   res.render('newOrder');
 });
 
@@ -56,9 +57,15 @@ router
     let product;
 
     try {
-      product = await Product.findOne({ where: { id: Number(req.params.id) }, include: User });
+      product = await Product.findOne({
+        where: {
+          id: Number(req.params.id),
+          status: 'placed',
+        },
+        include: User,
+      });
       if (product) {
-        console.log(product);
+        // console.log(product);
         const discountedPrice = (product.price - (product.price / product.discount)).toFixed(2);
         // const timeCreatedAt = product.createdAt;
         // const options = {
@@ -82,6 +89,15 @@ router
         error: {},
       });
     }
+  })
+  .delete(checkUser, async (req, res) => {
+    // try {
+    // console.log(req.params.id)
+    console.log(await Product.destroy({ where: { id: req.params.id } }));
+    // } catch (error) {
+    //   return res.json({ isDeleteSuccessful: false, errorMessage: 'Не удалось удалить запись из базы данных.' });
+    // }
+    // return res.json({ isDeleteSuccessful: true });
   });
 
 module.exports = router;
