@@ -70,8 +70,8 @@ router
   })
   .post(async (req, res) => {
     try {
-      console.log(req.body);
-      console.log(req.params);
+      // console.log(req.body);
+      // console.log(req.params);
       const userFromDB = await User.findOne({ where: { email: req.body.email } });
       if (userFromDB) {
         return res.json({ message: 'email занят' });

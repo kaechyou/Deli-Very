@@ -1,5 +1,6 @@
 const { postOrder } = document.forms;
-// console.log(postOrder);
+console.log(postOrder);
+
 
 if (postOrder) {
   postOrder.addEventListener('submit', async (e) => {

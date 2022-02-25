@@ -1,21 +1,27 @@
-<div class="cards">
-  {{#each products}}
-  <a href="/orders/details/{{id}}" class="no-dec">
-    <div class="card">
-      <div class="card-shadow"></div>
-      <div class="main-img-box">
-        <img class="main-img" src="{{img}}" class="card-img-top" alt="/images/logo.png">
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">{{title}}</h5>
-        <div class="price">
-          <div class="start-price">{{price}} руб.</div>
-          <div class="discount">-{{discount}}%</div>
-          <div class="final-price">{{finalPrice}}</div>
+<script defer src="https://api-maps.yandex.ru/2.1/?apikey=e8180acb-375a-4fc6-8f29-b4b366e44e0e&lang=ru_RU" type="text/javascript"></script>
+<script defer src="/js/map.js"></script>
+<div class="container">
+  <div class="cards">
+    {{#each products}}
+    <a href="/orders/details/{{id}}" class="no-dec">
+      <div class="card">
+        <div class="card-shadow"></div>
+        <div class="main-img-box">
+          <img class="main-img" src="{{img}}" class="card-img-top" alt="/images/logo.png">
         </div>
-        <div class="card-btn">Адрес: {{location}}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{title}}</h5>
+          <div class="price">
+            <div class="start-price">{{price}} руб.</div>
+            <div class="discount">-{{discount}}%</div>
+            <div class="final-price">{{finalPrice}}</div>
+          </div>
+          <div class="card-btn">Адрес: {{location}}</div>
+        </div>
       </div>
-    </div>
-  </a>
-  {{/each}}
+    </a>
+    {{/each}}
+  </div>
+   <div class="map" id="map" style="width: 100vw; height: 400px"></div>
 </div>
+
