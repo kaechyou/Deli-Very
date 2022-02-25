@@ -32,9 +32,9 @@ router.get('/', async (req, res) => {
   res.render('orders', { products });
 });
 
-router.get('/details/:id', async (req, res) => {
-  let product = await Product.findOne({ where: { id: req.params.id } });
-  const { title, img, price, discount } = product;
+router.get('/details/:id', async (req, res)=> {
+  let product = await Product.findOne({where: {id: req.params.id}});
+  const {title,img,price,discount} = product;
   console.log(product);
   if (product?.status === 'placed') {
     return res.render('product', { title, price, img, discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)) });
