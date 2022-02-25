@@ -6,11 +6,6 @@ const router = express.Router();
 const multer = require('multer');
 
 
-
-
-
-
-
 router.get('/courier', async (req, res) => {
   try {
     const products = await Product.findAll({ where: { courier_id: 1 } });
@@ -91,9 +86,12 @@ router
         const user = await User.create({
           name, email, phone, role_id, password,
         });
-        req.session.user_id = user.id;
-        req.session.user_name = user.name;
-        req.session.user_role = user.role_id;
+
+        req.session.name = name;
+        req.session.email = email;
+        req.session.id = user.id;
+        req.session.phone = phone;
+        req.session.role_id = role_id;
         return res.json({ message: 'Ok' });
       }
       return res.json({ message: 'не все поля' });
@@ -126,9 +124,11 @@ router
         const user = await User.findOne({ where: { email } });
         if (user) {
           if (user.password === password) {
-            req.session.user_id = user.id;
-            req.session.user_name = user.name;
-            req.session.user_role = user.role_id;
+            req.session.name = user.name;
+            req.session.email = email;
+            req.session.id = user.id;
+            req.session.phone = user.phone;
+            req.session.role_id = user.role_id;
             return res.json({ message: 'Ok' });
           }
           return res.json({ message: 'Неверный пароль' });
