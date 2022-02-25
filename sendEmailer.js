@@ -25,4 +25,6 @@ async function mailClient(address, text) {
   });
 }
 
+// mailClient('alymkulov.almambet@gmail.com', 'rabotaet je').catch(console.error);
+
 module.exports = mailClient;

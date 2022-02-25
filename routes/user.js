@@ -17,6 +17,7 @@ router.get('/courier', courierRouter, async (req, res) => {
     res.render('courier', { products });
   } catch (e) {
     console.log(e);
+    // console.log('HERE!!!')
     res.sendStatus(500);
   }
 });
@@ -74,9 +75,14 @@ router.delete('/client', clientRouter, async (req, res) => {
     const order = await Order.findOne({ where: { id: req.body.id } });
     if (order) {
       if (order.status === 'complete') {
-        res.sendStatus(234);
+        return res.sendStatus(234);
       }
       await Order.destroy({ where: { id: req.body.id } });
+      try {
+        mailClient(courierMail, 'Привет, я передумал покупать еду)');
+        } catch (e) {
+          console.log('Не удалось отправить сообщение');
+        }
       res.sendStatus(200);
     } else {
       res.sendStatus(404);

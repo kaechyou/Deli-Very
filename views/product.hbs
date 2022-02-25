@@ -4,7 +4,7 @@
 </div>
 <div class="product-info">
   <img class="product-image"
-    src="https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131085053/171027192707/p_O.jpg">
+    src="{{product.img}}">
   <div class="p-info">Адрес: {{product.location}}</div>
   <div class="p-info">Изначальная цена: {{product.price}} руб.</div>
   <div class="p-info">Скидка: {{product.discount}}%</div>
@@ -12,9 +12,11 @@
   <div class="p-info">Размещено: {{date}}</div>
   <div class="p-info">Курьер: {{product.User.name}}</div>
   <div class="p-buttons">
+  {{#if client}}
   <input id="address" placeholder="Адрес доставки" type="text" value="Москва">
   <a id="buy" href="/user/client" class="btn btn-primary"><button id="buyProductButton" data-entryid="{{product.id}}"
       value="buy" class="btn">Купить</button></a>
+  {{/if}}
   {{#if isAuthor}}
   <a id="del" href="/user/courier" data-entryid="{{product.id}}"><button id="deleteProductButton" data-entryid="{{product.id}}"
       value="delete" class="btn">Удалить</button></a>

@@ -117,7 +117,11 @@ router
   .delete(checkUser, async (req, res) => {
     // try {
     // console.log(req.params.id)
+    try {
     await Product.destroy({ where: { id: req.params.id } });
+    } catch (e) {
+      
+    }
     // } catch (error) {
     //   return res.json({ isDeleteSuccessful: false, errorMessage: 'Не удалось удалить запись из базы данных.' });
     // }
@@ -126,6 +130,13 @@ router
   .put(async (req,res)=>{
     try{
     const newOrder = await Order.create({product_id: req.params.id, client_id: req.session.user_id, location: req.body.location});
+    const product = await Product.findByPk(req.params.id);
+    const courierMail = product.client_id;
+    try {
+    mailClient(courierMail, 'Привет, я хочу купить еду)');
+    } catch (e) {
+      console.log('Не удалось отправить сообщение');
+    }
     res.sendStatus(200);
     }
  catch (e) {

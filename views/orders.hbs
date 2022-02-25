@@ -1,3 +1,5 @@
+<script defer src="https://api-maps.yandex.ru/2.1/?apikey=e8180acb-375a-4fc6-8f29-b4b366e44e0e&lang=ru_RU" type="text/javascript"></script>
+<script defer src="/js/map.js"></script>
 <div class="cards">
   {{#each products}}
   <a href="/orders/{{id}}" class="no-dec">
@@ -19,3 +21,5 @@
   </a>
   {{/each}}
 </div>
+
+<div class="map" id="map" style="width: 100vw; height: 500px"></div>
