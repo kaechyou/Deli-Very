@@ -2,12 +2,14 @@ const express = require('express');
 const sha256 = require('sha256');
 const { User, Product, Order } = require('../db/models');
 
+const { courierRouter, clientRouter } = require('../middlewares/middleware');
+
 const router = express.Router();
 const multer = require('multer');
 
-router.get('/courier', async (req, res) => {
+router.get('/courier', courierRouter, async (req, res) => {
   try {
-    const products = await Product.findAll({ where: { courier_id: 1 } });
+    const products = await Product.findAll({ where: { courier_id: req.session.user_id } });
     const options = {
       hour: 'numeric', minute: 'numeric', month: 'long', day: 'numeric',
     };
@@ -15,11 +17,12 @@ router.get('/courier', async (req, res) => {
     res.render('courier', { products });
   } catch (e) {
     console.log(e);
+    // console.log('HERE!!!')
     res.sendStatus(500);
   }
 });
 
-router.put('/courier', async (req, res) => {
+router.put('/courier', courierRouter, async (req, res) => {
   const product = await Product.findByPk(req.body.id);
   if (product.status === req.body.statusProduct) {
     res.sendStatus(234);
@@ -33,7 +36,7 @@ router.put('/courier', async (req, res) => {
   }
 });
 
-router.delete('/courier', async (req, res) => {
+router.delete('/courier', courierRouter, async (req, res) => {
   try {
     const order = await Order.findOne({ where: { product_id: req.body.id } });
     if (order) {
@@ -48,12 +51,44 @@ router.delete('/courier', async (req, res) => {
   }
 });
 
-router.get('/client', async (req, res) => {
+router.get('/client', clientRouter, async (req, res) => {
   try {
-    const orders = await Order.findOne({ where: { client_id: req.session.user_id } });
-    res.render('client', { orders });
+    const orders = await Order.findAll({
+      where: {
+        client_id: req.session.user_id,
+      },
+      include: Product,
+    });
+    const options = {
+      hour: 'numeric', minute: 'numeric', month: 'long', day: 'numeric',
+    };
+    orders.map((el) => el.date = el.updatedAt.toLocaleDateString('ru', options));
+    res.render('clientProfile', { orders });
   } catch (e) {
     console.log(e);
+    res.sendStatus(500);
+  }
+});
+
+router.delete('/client', clientRouter, async (req, res) => {
+  try {
+    const order = await Order.findOne({ where: { id: req.body.id } });
+    if (order) {
+      if (order.status === 'complete') {
+        return res.sendStatus(234);
+      }
+      await Order.destroy({ where: { id: req.body.id } });
+      try {
+        mailClient(courierMail, 'Привет, я передумал покупать еду)');
+        } catch (e) {
+          console.log('Не удалось отправить сообщение');
+        }
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (e) {
+    console.error(e);
     res.sendStatus(500);
   }
 });
@@ -70,8 +105,6 @@ router
   })
   .post(async (req, res) => {
     try {
-      console.log(req.body);
-      console.log(req.params);
       const userFromDB = await User.findOne({ where: { email: req.body.email } });
       if (userFromDB) {
         return res.json({ message: 'email занят' });
@@ -110,6 +143,8 @@ router
     }
   })
   .post(async (req, res) => {
+    console.log('==================>', req.session.userId);
+
     try {
       // проверить, есть ли кто-то в рек сессии
       if (req.session.user_id) {

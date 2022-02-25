@@ -7,22 +7,19 @@ const buyProductButton = document.querySelector('#buyProductButton');
 
 if (deleteProductButton) {
   deleteProductButton.addEventListener('click', async (event) => {
-    try {
-      await fetch(`/orders/${event.target.dataset.entryid}`);
+      const response = await fetch(`/orders/${event.target.dataset.entryid}`,{
+      method: 'delete' });
       window.location = '/orders';
-    } catch (error) {
-      alert(error);
-    }
   });
 }
 
-buyProductButton.addEventListener('click', async (event)=>{
-  console.log('tut');
+buyProductButton?.addEventListener('click', async (event)=>{
+  // console.log('tut');
   event.preventDefault();
   try {
     const input = document.getElementById('address');
-    console.log(input.value + 'dasdsadasda')
-    console.log(input.value.trim(), ' dasdsa')
+    // console.log(input.value + 'dasdsadasda')
+    // console.log(input.value.trim(), ' dasdsa')
     if (input.value.trim() === '') {
       alert('Введите адрес');
       return;
@@ -30,7 +27,7 @@ buyProductButton.addEventListener('click', async (event)=>{
     const newOrder = await fetch(`/orders/${event.target.dataset.entryid}`, {
       method: 'put',
       headers: {
-        'Content-type': 'application/json'
+        'Content-type': 'application/json',
       },
       body: JSON.stringify({location: input.value}),
     });
