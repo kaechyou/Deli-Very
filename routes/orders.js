@@ -1,6 +1,7 @@
 const express = require('express');
 
 const multer = require('multer');
+const mailClient = require('../sendEmailer');
 const {
   User, Product, Order, Role,
 } = require('../db/models');

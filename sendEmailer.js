@@ -1,21 +1,21 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-async function main(address, text) {
+async function mailClient(address, text) {
   const smtpTransport = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: 'alymkulov.almambet@gmail.com',
-      pass: 'hesoyamrimma10',
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_USER_PASSWORD,
     },
   });
 
   await smtpTransport.sendMail({
-    from: '"DELIVERY KEBAB" <process.env.GMAIL_USER>',
+    from: '"DELIVERY KEBAB"',
     to: address,
     subject: 'subject',
     text,
-    html: '<b>{text}</b>',
+    html: `<b>${text}</b>`,
   }, (error, response) => {
     if (error) {
       console.log(error);
@@ -25,7 +25,4 @@ async function main(address, text) {
   });
 }
 
-const text = 'hello my friend';
-main('jinaguyfersahcoli@gmail.com', text).catch(console.error);
-
-module.exports = main;
+module.exports = mailClient;
