@@ -1,12 +1,25 @@
+<script defer src="/js/product.js"></script>
+<div class="p-title-flex">
+  <div class="p-title">{{product.title}}</div>
+</div>
 <div class="product-info">
   <img class="product-image"
     src="https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131085053/171027192707/p_O.jpg">
-  <div class="p-title">{{title}}</div>
-  <div class="p-info">hz</div>
-  <div class="p-info">address</div>
-  <div class="p-info">cena</div>
-  <div class="p-info">skidka</div>
-  <div class="p-info">final cena</div>
+  <div class="p-info">Адрес: {{product.location}}</div>
+  <div class="p-info">Изначальная цена: {{product.price}} руб.</div>
+  <div class="p-info">Скидка: {{product.discount}}%</div>
+  <div class="p-info">Цена со скидкой: {{discountedPrice}} руб.</div>
+  <div class="p-info">Размещено: {{date}}</div>
+  <div class="p-info">Курьер: {{product.User.name}}</div>
+  <div class="p-buttons">
+  <input id="address" placeholder="Адрес доставки" type="text" value="Москва">
+  <a id="buy" href="/user/client" class="btn btn-primary"><button id="buyProductButton" data-entryid="{{product.id}}"
+      value="buy" class="btn">Купить</button></a>
+  {{#if isAuthor}}
+  <a id="del" href="/user/courier" data-entryid="{{product.id}}"><button id="deleteProductButton" data-entryid="{{product.id}}"
+      value="delete" class="btn">Удалить</button></a>
+  {{/if}}
+  </div>
   <div class="product-back">
     <!-- <script type="module">
           import { Loader } from 'https://cdn.pika.dev/google-maps';
