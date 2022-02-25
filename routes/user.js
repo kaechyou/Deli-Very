@@ -142,9 +142,11 @@ router
         const user = await User.findOne({ where: { email } });
         if (user) {
           if (user.password === password) {
-            req.session.user_id = user.id;
-            req.session.user_name = user.name;
-            req.session.user_role = user.role_id;
+            req.session.name = user.name;
+            req.session.email = email;
+            req.session.id = user.id;
+            req.session.phone = user.phone;
+            req.session.role_id = user.role_id;
             return res.json({ message: 'Ok' });
           }
           return res.json({ message: 'Неверный пароль' });

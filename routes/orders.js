@@ -27,7 +27,8 @@ router.get('/', async (req, res) => {
     },
   });
   products = products.map(el => {
-    el.finalPrice = Math.floor(el.price * ((100 - el.discount) / 100))
+    el.finalPrice = Math.floor(el.price * ((100 - el.discount) / 100));
+    el.title = el.title.length > 12 ? el.title.slice(0, 12) + '...' : el.title;
     return el;
   });
   res.render('orders', { products });
