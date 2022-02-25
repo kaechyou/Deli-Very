@@ -2,14 +2,14 @@ const express = require('express');
 const sha256 = require('sha256');
 const { User, Product, Order } = require('../db/models');
 
-const { courierRouter } = require('../middlewares/middleware');
+const { courierRouter, clientRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 const multer = require('multer');
 
 router.get('/courier', courierRouter, async (req, res) => {
   try {
-    const products = await Product.findAll({ where: { courier_id: 1 } });
+    const products = await Product.findAll({ where: { courier_id: req.session.user_id } });
     const options = {
       hour: 'numeric', minute: 'numeric', month: 'long', day: 'numeric',
     };
@@ -50,7 +50,7 @@ router.delete('/courier', courierRouter, async (req, res) => {
   }
 });
 
-router.get('/client', async (req, res) => {
+router.get('/client', clientRouter, async (req, res) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -69,11 +69,20 @@ router.get('/client', async (req, res) => {
   }
 });
 
-router.delete('/client', async (req, res) => {
+router.delete('/client', clientRouter, async (req, res) => {
   try {
-
+    const order = await Order.findOne({ where: { id: req.body.id } });
+    if (order) {
+      if (order.status === 'complete') {
+        res.sendStatus(234);
+      }
+      await Order.destroy({ where: { id: req.body.id } });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (e) {
-    log.error(e);
+    console.error(e);
     res.sendStatus(500);
   }
 });
@@ -90,8 +99,6 @@ router
   })
   .post(async (req, res) => {
     try {
-      console.log(req.body);
-      console.log(req.params);
       const userFromDB = await User.findOne({ where: { email: req.body.email } });
       if (userFromDB) {
         return res.json({ message: 'email занят' });
@@ -107,7 +114,7 @@ router
         });
         req.session.name = name;
         req.session.email = email;
-        req.session.id = user.id;
+        req.session.user_id = user.id;
         req.session.phone = phone;
         req.session.role_id = role_id;
         return res.json({ message: 'Ok' });
@@ -130,6 +137,8 @@ router
     }
   })
   .post(async (req, res) => {
+    console.log('==================>', req.session.userId);
+
     try {
       // проверить, есть ли кто-то в рек сессии
       if (req.session.user_id) {
@@ -144,7 +153,7 @@ router
           if (user.password === password) {
             req.session.name = user.name;
             req.session.email = email;
-            req.session.id = user.id;
+            req.session.user_id = user.id;
             req.session.phone = user.phone;
             req.session.role_id = user.role_id;
             return res.json({ message: 'Ok' });

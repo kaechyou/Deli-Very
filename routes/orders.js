@@ -26,20 +26,28 @@ router.get('/', async (req, res) => {
       status: 'placed',
     },
   });
-  products = products.map(el => {
+  products = products.map((el) => {
     el.finalPrice = Math.floor(el.price * ((100 - el.discount) / 100));
-    el.title = el.title.length > 12 ? el.title.slice(0, 12) + '...' : el.title;
+    el.title = el.title.length > 12 ? `${el.title.slice(0, 12)}...` : el.title;
     return el;
   });
   res.render('orders', { products });
 });
 
-router.get('/details/:id', async (req, res)=> {
-  let product = await Product.findOne({where: {id: req.params.id}});
-  const {title,img,price,discount} = product;
+router.get('/details/:id', async (req, res) => {
+  const product = await Product.findOne({ where: { id: req.params.id } });
+  const {
+    title, img, price, discount,
+  } = product;
   console.log(product);
   if (product?.status === 'placed') {
-    return res.render('product', { title, price,img,discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)) });
+    return res.render('product', {
+      title,
+      price,
+      img,
+      discount,
+      finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)),
+    });
   }
   res.redirect('/orders');
 });
