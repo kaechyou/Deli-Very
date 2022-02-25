@@ -1,9 +1,13 @@
 const express = require('express');
+
 const multer = require('multer');
+const mailClient = require('../sendEmailer');
 const {
   User, Product, Order, Role,
 } = require('../db/models');
 const { checkUser } = require('../middlewares/middleware');
+
+const { courierRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 
@@ -24,9 +28,9 @@ router.get('/', async (req, res) => {
       status: 'placed',
     },
   });
-  products = products.map(el => {
+  products = products.map((el) => {
     el.finalPrice = Math.floor(el.price * ((100 - el.discount) / 100));
-    el.title = el.title.length > 12 ? el.title.slice(0, 12) + '...' : el.title;
+    el.title = el.title.length > 12 ? `${el.title.slice(0, 12)}...` : el.title;
     return el;
   });
   res.render('orders', { products });
@@ -42,7 +46,7 @@ router.get('/', async (req, res) => {
 //   res.redirect('/orders');
 // });
 
-router.get('/new', (req, res) => {
+router.get('/new', courierRouter, (req, res) => {
   res.render('newOrder');
 });
 

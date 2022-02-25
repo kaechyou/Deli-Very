@@ -2,7 +2,7 @@ const courierProfile = document.querySelector('#courier');
 
 courierProfile.addEventListener('click', async (e) => {
   const { id } = e.target.parentNode.dataset;
-  if (e.target.id === `placed${id}` || e.target.id === `pending${id}`) {
+  if (e.target.id === `complete${id}` || e.target.id === `pending${id}`) {
     const statusProduct = e.target.id.slice(0, -1);
     const response = await fetch('/user/courier', {
       method: 'PUT',
