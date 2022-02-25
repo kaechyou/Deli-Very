@@ -69,6 +69,15 @@ router.get('/client', async (req, res) => {
   }
 });
 
+router.delete('/client', async (req, res) => {
+  try {
+
+  } catch (e) {
+    log.error(e);
+    res.sendStatus(500);
+  }
+});
+
 // Регистрация: user/signup
 router
   .route('/signup')
