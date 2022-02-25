@@ -20,11 +20,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get('/', async (req, res) => {
-  const products = await Product.findAll({
+  let products = await Product.findAll({
     where: {
       status: 'placed',
     },
     order: [['createdAt', 'DESC']],
+  });
+  products = products.map(el => {
+    el.finalPrice = Math.floor(el.price * ((100 - el.discount) / 100))
+    return el;
   });
   res.render('orders', { products });
 });

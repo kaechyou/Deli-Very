@@ -1,21 +1,21 @@
-<h1>Добро пожаловать в Kebab!</h1>
-
-  <div class="buy-card">
-    {{#each products}}
-    <div data-id="{{id}}" class="card"  style="width: 18rem;">
-      <img src="{{img}}" class="card-img-top" alt="{{title}}">
+<div class="cards">
+  {{#each products}}
+  <a href="/orders/details/{{id}}" class="no-dec">
+    <div class="card">
+      <div class="card-shadow"></div>
+      <div class="main-img-box">
+        <img class="main-img" src="{{img}}" class="card-img-top" alt="/images/logo.png">
+      </div>
       <div class="card-body">
         <h5 class="card-title">{{title}}</h5>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Старая цена: {{price}}</li>
-        <li class="list-group-item">Новая цена: {{price}}</li>
-        <li class="list-group-item">Адрес: {{location}}</li>
-      </ul>
-      <div class="card-body">
-       <button type="button" name="buy" id="{{id}}"><a href="/orders/{{id}}">Купить</a></button>
+        <div class="price">
+          <div class="start-price">{{price}} руб.</div>
+          <div class="discount">-{{discount}}%</div>
+          <div class="final-price">{{finalPrice}}</div>
+        </div>
+        <div class="card-btn">Адрес: {{location}}</div>
       </div>
     </div>
-    {{/each}}
-  </div>
-
+  </a>
+  {{/each}}
+</div>
