@@ -438,7 +438,7 @@ body {
 }
 
 .signup {
-  margin-top: 94px!important;
+  margin-top: 94px !important;
 }
 
 footer {
@@ -451,4 +451,45 @@ footer {
 
 .img-logo {
   width: 300px;
+}
+
+.c {
+  display: flex;
+  flex-direction: column;
+  /* flex-flow: wrap; */
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px;
+  width: 50vw;
+  margin-left: 25vw;
+  background: linear-gradient(90deg, rgb(51 88 79) 0%, rgb(81 159 140) 80%, rgba(135, 187, 175, 1) 100%);
+  height: 300px;
+  border-radius: 20px;
+}
+.c-1 {
+  display: flex;
+  flex-direction: column;
+  /* flex-flow: wrap; */
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px;
+  width: 50vw;
+  margin-left: 25vw;
+  background: linear-gradient(90deg, rgb(51 88 79) 0%, rgb(81 159 140) 80%, rgba(135, 187, 175, 1) 100%);
+  height: 360px;
+  border-radius: 20px;
+}
+
+.mb-1 {
+  font-size: 20px;
+  color: #baf4e6;
+  text-shadow: 1px 1px 1px black;
+}
+
+.m {
+  height: 40px;
+}
+
+.sm {
+  width: 150px;
 }

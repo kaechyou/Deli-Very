@@ -6,6 +6,7 @@ const { courierRouter, clientRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 const multer = require('multer');
+const mailClient = require('../sendEmailer');
 
 router.get('/courier', courierRouter, async (req, res) => {
   try {
@@ -77,9 +78,11 @@ router.delete('/client', clientRouter, async (req, res) => {
       if (order.status === 'complete') {
         return res.sendStatus(234);
       }
+      const product = await Product.findOne({where: {id:order.product_id}});
+      const courier = await User.findOne({where:{id:product.courier_id}});
       await Order.destroy({ where: { id: req.body.id } });
       try {
-        mailClient(courierMail, 'Привет, я передумал покупать еду)');
+        mailClient(courier.email, 'Привет, я передумал покупать еду)');
         } catch (e) {
           console.log('Не удалось отправить сообщение');
         }

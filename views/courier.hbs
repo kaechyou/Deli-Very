@@ -1,17 +1,18 @@
 <div id="courier">
     {{#each products}}
-        <div class="list-group container" id="product">
+        <div class="c-1" id="product">
+          <h5 class="mb-1">{{title}}</h5>
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{title}}</h5>
-                <small class="text-muted">{{date}}</small>
+                
+                <small class="mb-1">{{date}}</small>
             </div>
             <p class="mb-1" id="status{{id}}">Статус: {{status}}</p>
             <p class="mb-1">Локация:{{location}}</p>
-            <small class="text-muted">Стартовая цена:{{price}}. Скидка: {{discount}}%.</small>
+            <small class="mb-1 m">Стартовая цена:{{price}}. Скидка: {{discount}}%.</small>
             <div data-id="{{id}}" class="btn-group" role="group" aria-label="Basic example">
-                <button id="complete{{id}}" type="button" class="btn btn-primary">Выполнено</button>
-                <button id="pending{{id}}" type="button" class="btn btn-primary">В процессе</button>
-                <button id="delete{{id}}" type="button" class="btn btn-primary">Удалить</button>
+                <button id="complete{{id}}" type="button" class="btn-s btn subm sm">Выполнено</button>
+                <button id="pending{{id}}" type="button" class="btn-s btn subm sm">В процессе</button>
+                <button id="delete{{id}}" type="button" class="btn-s btn subm sm">Удалить</button>
             </div>
         </div>
     {{/each}}
