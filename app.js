@@ -14,7 +14,7 @@ app.set('view engine', 'hbs');
 const userRouter = require('./routes/user');
 const indexRouter = require('./routes/index');
 const ordersRouter = require('./routes/orders');
-const testMapRouter = require('./routes/testmap');
+// const testMapRouter = require('./routes/testmap');
 
 
 const { addSessionCookies } = require('./middlewares/middleware');
@@ -40,7 +40,7 @@ app.use(addSessionCookies);
 app.use('/user', userRouter);
 app.use('/', indexRouter);
 app.use('/orders', ordersRouter);
-app.use('/testmap', testMapRouter);
+// app.use('/testmap', testMapRouter);
 
 app.listen(PORT, () => {
   console.log('Port is ok');

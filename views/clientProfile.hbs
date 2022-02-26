@@ -1,0 +1,17 @@
+<div id="courier">
+    {{#each orders}}
+        <div class="c" id="product{{id}}">
+            <div class="d-flex w-100 justify-content-between">
+                {{!-- <h5 class="mb-1">{{title}}</h5> --}}
+                <small class="mb-1">{{date}}</small>
+            </div>
+            <p class="mb-1" id="status{{Product.product_id}}">Статус: {{Product.status}}</p>
+            <p class="mb-1">Локация:{{location}}</p>
+            <small class="mb-1 m">Стартовая цена:{{Product.price}}. Скидка: {{Product.discount}}%.</small>
+            <div data-id="{{id}}">
+                <button id="delete{{id}}" type="button" class="btn-s btn subm">Отказаться от заказа</button>
+            </div>
+        </div>
+    {{/each}}
+</div>
+<script defer src="/js/clientProfile.js"></script>

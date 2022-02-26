@@ -115,7 +115,11 @@ function init() {
     myMap.geoObjects.add(result.geoObjects);
   });
 
+<<<<<<< HEAD
   // map.controls.remove('geolocationControl'); // удаляем геолокацию
+=======
+// map.controls.remove('geolocationControl'); // удаляем геолокацию
+>>>>>>> 1890ecfa4393c50a4d7c9f020b7d0823f26436d3
   // map.controls.remove('searchControl'); // удаляем поиск
   // map.controls.remove('trafficControl'); // удаляем контроль трафика
   // map.controls.remove('typeSelector'); // удаляем тип

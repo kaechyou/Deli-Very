@@ -1,8 +1,10 @@
 const express = require('express');
 const multer = require('multer');
+const mailClient = require('../sendEmailer');
 const {
   User, Product, Order, Role,
 } = require('../db/models');
+const { checkUser, courierRouter } = require('../middlewares/middleware');
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -27,20 +29,18 @@ router.get('/', async (req, res) => {
   });
   res.render('orders', { products });
 });
-router.get('/details/:id', async (req, res) => {
-  const product = await Product.findOne({ where: { id: req.params.id } });
-  const {
-    title, img, price, discount,
-  } = product;
-  console.log(product);
-  if (product?.status === 'placed') {
-    return res.render('product', {
-      title, price, img, discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)),
-    });
-  }
-  res.redirect('/orders');
-});
-router.get('/new', (req, res) => {
+
+// router.get('/details/:id', async (req, res)=> {
+//   let product = await Product.findOne({where: {id: req.params.id}});
+//   const {title,img,price,discount} = product;
+//   console.log(product);
+//   if (product?.status === 'placed') {
+//     return res.render('product', { title, price, img, discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)) });
+//   }
+//   res.redirect('/orders');
+// });
+
+router.get('/new', courierRouter, (req, res) => {
   res.render('newOrder');
 });
 router.post('/new', upload.single('image'), async (req, res) => {
@@ -53,7 +53,7 @@ router.post('/new', upload.single('image'), async (req, res) => {
       price,
       discount,
       location,
-      courier_id: 1,
+      courier_id: req.session.user_id,
       status: 'placed',
       img: `/uploads/${req.file.originalname}`,
     });
@@ -62,4 +62,82 @@ router.post('/new', upload.single('image'), async (req, res) => {
     res.sendStatus(418);
   }
 });
+
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    console.log('tut');
+    let product;
+
+    try {
+      product = await Product.findOne({
+        where: {
+          id: Number(req.params.id),
+          status: 'placed',
+        },
+        include: User,
+      });
+  // console.log(product.createdAt.toString());
+    // return res.render('product', { title, price, img, discount, finalPrice: Math.floor(product.price * ((100 - product.discount) / 100)) });
+      if (product) {
+
+        // console.log(product);
+        const discountedPrice = Math.floor(product.price * ((100 - product.discount) / 100));
+        // const timeCreatedAt = product.createdAt;
+        // const options = {
+        //   month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric',
+        // };
+        // const localTimeCreatedAt = timeCreatedAt.toLocaleDateString('ru', options);
+        // console.log(req.session.user_id, product?.User.id, req.session.id);
+        if (req.session.user_id === product?.User.id) {
+          res.render('product', { product, discountedPrice, "isAuthor": true, date: product.createdAt.toString().slice(8, 24) });
+        } else {
+          res.render('product', { product, discountedPrice, "isAuthor": false, date: product.createdAt.toString().slice(0, 24)});
+        }
+      } else {
+        return res.render('error', {
+          message: 'Такой записи не существует.',
+          error: {},
+        });
+      }
+    } catch (error) {
+      return res.render('error', {
+        message: 'Не удалось получить запись из базы данных.',
+        error: {},
+      });
+    }
+  })
+  .delete(checkUser, async (req, res) => {
+    // try {
+    // console.log(req.params.id)
+    try {
+    await Product.destroy({ where: { id: req.params.id } });
+    } catch (e) {
+
+    }
+    // } catch (error) {
+    //   return res.json({ isDeleteSuccessful: false, errorMessage: 'Не удалось удалить запись из базы данных.' });
+    // }
+    // return res.json({ isDeleteSuccessful: true });
+  })
+  .put(async (req,res)=>{
+    try{
+    const newOrder = await Order.create({product_id: req.params.id, client_id: req.session.user_id, location: req.body.location});
+    const product = await Product.findByPk(req.params.id);
+    const client = await User.findOne({where:{id:product.courier_id}});
+    try {
+    mailClient(client.email, 'Привет, я хочу купить еду)');
+    } catch (e) {
+      console.log('Не удалось отправить сообщение');
+    }
+    res.sendStatus(200);
+    }
+ catch (e) {
+  return res.render('error', {
+    message: 'Не удалось получить запись из базы данных.',
+    error: {},
+  });
+ }  
+});
+
 module.exports = router;

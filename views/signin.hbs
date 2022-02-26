@@ -1,18 +1,18 @@
 <script defer src="/js/clientsignin.js"></script>
 <div class="container" style="width:500px">
   <h1>Вход</h1>
-  <form name="authForm" method="post">
-    <div class="container">
+  <form name="authForm" method="post" class="signin">
+    <div class="container" id="order">
       <div class="mb-2">
         <label for="exampleInputEmail1" class="form-label">Email</label>
-        <input placeholder="ivan@mail.ru" required name="email" type="email" class="form-control" id="signupEmail"
+        <input required name="email" type="email" class="form-control f" id="signupEmail"
           aria-describedby="emailHelp">
       </div>
       <div class="mb-3 ">
         <label for="exampleInputPassword1" class="form-label">Пароль</label>
-        <input placeholder="qwerty" required name="pass" type="password" class="form-control" id="signupPassword">
+        <input required name="pass" type="password" class="form-control f" id="signupPassword">
       </div>
-      <button type="submit" class="btn btn-primary">Отправить</button>
+      <button type="submit" class="btn-s btn subm">Войти</button>
     </div>
   </form>
 </div>

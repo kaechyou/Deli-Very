@@ -2,39 +2,39 @@
 <div class="container" style="width:500px">
   <h1>Регистрация</h1>
   <form name="registerForm" method="post">
-    <div class="container">
+    <div class="container signup"  id="order">
       <div class="mb-2">
         <label for="exampleInputName1" class="form-label">Имя</label>
-        <input placeholder="Иван" required name="name" type="text" class="form-control" id="signupName"
+        <input required name="name" type="text" class="form-control f" id="signupName"
           aria-describedby="emailHelp">
       </div>
       <div class="mb-2">
         <label for="exampleInputEmail1" class="form-label">Email</label>
-        <input placeholder="ivan@mail.ru" required name="email" type="email" class="form-control" id="signupEmail"
+        <input required name="email" type="email" class="form-control f" id="signupEmail"
           aria-describedby="emailHelp">
       </div>
       <div class="md-2">
-        <label for="form1">Телефон</label>
-        <input type="text" id="form1" name="phone" class="form-control" data-mdb-input-mask="999-999-99-99" required>
+        <label for="form1" class="form-label">Телефон</label>
+        <input type="text" id="form1" name="phone" class="form-control f" data-mdb-input-mask="999-999-99-99" required>
       </div>
       <div class="mb-3 ">
         <label for="exampleInputPassword1" class="form-label">Пароль</label>
-        <input placeholder="qwerty" required name="pass" type="password" class="form-control" id="signupPassword">
+        <input required name="pass" type="password" class="form-control f" id="signupPassword">
       </div>
       <div class="mb-3 ">
         <div class="mb-3 form-check">
           <label for="exampleCheck1" class="form-label">Выберите роль:</label>
           <div>
-            <input type="radio" class="form-check-input" value="1" name="role_id" id="exampleCheck1">
+            <input type="radio" class="form-check-input f" value="1" name="role_id" id="exampleCheck1">
             <label class="form-check-label" value="1" id="signupRole1" for="exampleCheck1">Курьер</label>
           </div>
           <div>
-            <input type="radio" class="form-check-input" value="2" name="role_id" id="exampleCheck2" checked>
+            <input type="radio" class="form-check-input f" value="2" name="role_id" id="exampleCheck2" checked>
             <label class="form-check-label" value="2" id="signupRole2" for="exampleCheck2" checked>Клиент</label>
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Отправить</button>
+      <button type="submit" class="btn-s btn subm">Зарегистрироваться</button>
     </div>
   </form>
 </div>
