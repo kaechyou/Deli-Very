@@ -55,7 +55,7 @@
 
 
 ## Команда:
-* Демьянов Дмитрий - https://github.com/demyanoff1337
+* Дмитрий Демьянов - https://github.com/demyanoff1337
 * Алмамбет Алымкулов - https://github.com/A-A-21
 * Екатерина Гнеденко - https://github.com/kaechyou
 * Сергей Асафьев - https://github.com/Bender101
